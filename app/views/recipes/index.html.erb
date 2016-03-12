@@ -35,6 +35,7 @@
         <span class="quiet"><small>updated: <%= time_ago_in_words(recipe.updated_at) %> ago</small></span>
       </p>
       <div class="pull-right">
+        <%= recipe.review_total %> Reviews &nbsp&nbsp
         <%= link_to like_recipe_path(recipe, like: true), method: :post do %>
           <i class="glyphicon glyphicon-thumbs-up"></i> &nbsp <%= recipe.thumbs_up_total %>
         <% end %> &nbsp&nbsp&nbsp&nbsp

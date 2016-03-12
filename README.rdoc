@@ -36,3 +36,6 @@ What we need to do:
 - Ability for chefs to log in and log out of the app
 - Restrict actions like create recipe, edit recipe and like feature to logged in chefs only
 - Restricting edit of recipes by chefs who created the recipes
+
+Authentication updates:
+1) Show

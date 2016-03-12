@@ -1,47 +1,68 @@
 <%= render 'shared/page_title', title: @recipe.name %>
-
 <div class="row">
-  
-  <div class="col-md-4 pull-right center">
-    <%= link_to gravatar_for(@recipe.chef, size: 200), chef_path(@recipe.chef) %>
-    <p>
-      <h5>Brought to you by: <%= @recipe.chef.chefname %></h5>
-    </p>
-  </div>
-  
-  <div class="col-md-8">
-    <% if logged_in? and (@recipe.chef == current_user || current_user.admin?) %>
-      <%= link_to "Edit this recipe", edit_recipe_path(@recipe), class: "btn btn-success pull-right" %>
-    <% end %>
-    <% if logged_in? and current_user.admin? %>
-      <%= link_to "[Delete Recipe]", @recipe, method: :delete, data: { confirm: "Are you sure?" } %>
-    <% end %>
-    <h3><%= @recipe.summary %></h3>
-    <div class="show_recipe">
-      <%= image_tag(@recipe.picture.url, class: "gravatar") if @recipe.picture? %>
-    </div>
-    <div class="well">
-      <% if @recipe.styles.any? %>
-        <p>Style: <%= render @recipe.styles %></p>
-      <% end %>
-      <% if @recipe.ingredients.any? %>
-        <p>Ingredients: <%= render @recipe.ingredients %></p>
-      <% end %>
-      <p>
-        <strong>Steps:</strong>
-      </p>
-      <%= simple_format(@recipe.description) %>
-      <div class="pull-right">
-        <%= link_to like_recipe_path(@recipe, like: true), method: :post do %>
-          <i class="glyphicon glyphicon-thumbs-up"></i> &nbsp <%= @recipe.thumbs_up_total %>
-        <% end %> &nbsp&nbsp&nbsp&nbsp
-        <%= link_to like_recipe_path(@recipe, like: false), method: :post do %>
-          <i class="glyphicon glyphicon-thumbs-down"></i> &nbsp <%= @recipe.thumbs_down_total %>
-        <% end %>
-      </div>
-    </div>
-  </div>
-  
+	<div class="col-md-4 pull-right center" >
+		<%= link_to gravatar_for(@recipe.chef, size: 200), chef_path(@recipe.chef) %>
+		<p>
+			<h5>Brought to you by: <%= @recipe.chef.chefname %></h5>
+		</p>
+	</div>
+	<div class="col-md-8">
+		<% if logged_in? and(@recipe.chef == current_user || current_user.admin?) %>
+		<%= link_to "Edit This Recipe", edit_recipe_path(@recipe), class: "btn border-blue-browse pull-right" %>
+		<% end %>
+		<% if logged_in? and current_user.admin? %>
+		<%= link_to "[Delete Recipe]", @recipe, method: :delete, data: { confirm: "Are you sure you want to delete this recipe?" } %>
+		<%end%>
+		<h3><%= @recipe.summary %></h3>
+		<div class="show_recipe">
+			<%= image_tag(@recipe.picture.url, class: "gravatar") if @recipe.picture? %>
+		</div>
+		<div class="well">
+			<% if @recipe.styles.any? %>
+			<p>Style: <%= render @recipe.styles %></p>
+			<% end %>
+			<% if @recipe.ingredients.any? %>
+			<p>Ingredients: <%= render @recipe.ingredients %></p>
+			<% end %>
+			<p>
+				<strong>Steps:</strong>
+			</p>
+			<%= simple_format(@recipe.description) %>
+			<div class="pull-right">
+				<%= link_to like_recipe_path(@recipe, like: true), method: :post do %>
+				<i class="glyphicon glyphicon-thumbs-up"></i>&nbsp <%= @recipe.thumbs_up_total %>
+				<% end %> &nbsp&nbsp&nbsp&nbsp
+				<%= link_to like_recipe_path(@recipe, like: false), method: :post do %>
+				<i class="glyphicon glyphicon-thumbs-down"></i>&nbsp <%= @recipe.thumbs_down_total %>
+				<% end %>
+			</div>
+		</div>
+	</div>
 </div>
+<% if logged_in? %>
+<div class="row">
+	<div class="col-md-8">
+		<%= render 'shared/page_title', title: "Review This Recipe" %>
+		
+		
+				<%= form_for([@recipe, @review]) do |f| %>
+				<%= f.label :Review %>
+				<%= f.text_area :review, rows: 5  %>
+			
+				<%= f.submit "Create Review", class: "btn btn-success" %>
+				<% end %>
+			
+	</div>
+</div>
+<% else %>
+<p><%= link_to "Want to leave a review? Go Sign up!", register_path %></p>
+<% end %>
+<div class="row">
+	<div class="col-md-8">
+		<h2>Reviews</h2>
+			<%= render @recipe.reviews %>
 
-<h5><%= link_to "Return to Recipes Listing", recipes_path, class: "btn btn-warning btn-small" %></h5>
+		</div>
+	</div>
+
+<h5><%= link_to "Return to Recipe Listing", recipes_path, class: "btn border-blue-browse btn-small" %></h5>
