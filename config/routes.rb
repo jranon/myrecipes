@@ -8,7 +8,7 @@ resources :recipes do
 	member do
 		post 'like'
 	end
-end 
+
 
 resources :reviews
 end
